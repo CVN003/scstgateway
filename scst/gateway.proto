@@ -1,0 +1,54 @@
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative gateway.proto
+
+syntax ="proto3";
+
+option go_package = "github.com/CVN003/scstgateway/scst";
+
+package scst;
+
+message AddSVDReq {
+    string LunName = 1;
+    string LunDeviceFullPath = 2;
+    string VID = 3;
+    string PID = 4;
+    string USN = 5;
+    string HandlerType = 6;
+}
+
+message RemoveSVDReq {
+    string LunName = 1;
+    string HandlerType = 2;
+}
+
+message AddGroupReq {
+    string TargetName = 1;
+    string TargetType = 2;
+    string GroupName = 3;
+}
+
+message AddLun2GroupReq {
+    string TargetName = 1;
+    string TargetType = 2;
+    string GroupName = 3;
+    string LunName = 4;
+}
+
+message AddIni2GroupReq {
+    string TargetName = 1;
+    string TargetType = 2;
+    string GroupName = 3;
+    string Ini = 4; //如果有多个用;隔开
+}
+
+message SCSTResp {
+    int32 code =1;
+    string msg=2;
+}
+
+service SCSTGateway{
+    rpc AddSVD(AddSVDReq) returns (SCSTResp) {}
+    rpc RemoveSVD(RemoveSVDReq) returns (SCSTResp) {}
+    rpc AddGroup(AddGroupReq) returns (SCSTResp) {}
+    rpc AddLun2Group(AddLun2GroupReq) returns (SCSTResp) {}
+    rpc AddIni2Group(AddIni2GroupReq) returns (SCSTResp) {}
+}
