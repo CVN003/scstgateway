@@ -298,7 +298,7 @@ type AddIni2GroupReq struct {
 	TargetName string `protobuf:"bytes,1,opt,name=TargetName,proto3" json:"TargetName,omitempty"`
 	TargetType string `protobuf:"bytes,2,opt,name=TargetType,proto3" json:"TargetType,omitempty"`
 	GroupName  string `protobuf:"bytes,3,opt,name=GroupName,proto3" json:"GroupName,omitempty"`
-	Ini        string `protobuf:"bytes,4,opt,name=Ini,proto3" json:"Ini,omitempty"` //如果有多个用;隔开
+	Ini        string `protobuf:"bytes,4,opt,name=Ini,proto3" json:"Ini,omitempty"`
 }
 
 func (x *AddIni2GroupReq) Reset() {

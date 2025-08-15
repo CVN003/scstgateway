@@ -37,7 +37,7 @@ message AddIni2GroupReq {
     string TargetName = 1;
     string TargetType = 2;
     string GroupName = 3;
-    string Ini = 4; //如果有多个用;隔开
+    string Ini = 4; 
 }
 
 message SCSTResp {
