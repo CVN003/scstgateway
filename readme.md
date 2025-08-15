@@ -81,7 +81,5 @@ func TestSVD_ADD(t *testing.T) {
 
 
 
-商用合作联系：
-
-<img width="402" height="404" alt="image" src="https://github.com/user-attachments/assets/26a939ac-42db-4224-8276-34d8834a538c" />
+商用合作联系:cvn009
 
