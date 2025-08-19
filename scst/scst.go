@@ -95,3 +95,20 @@ func (g *Gateway) AddIni2Group(ctx context.Context, req *AddIni2GroupReq) (*SCST
 	}
 	return resp, nil
 }
+
+func (g *Gateway) RemIni2Group(ctx context.Context, req *RemIni2GroupReq) (*SCSTResp, error) {
+	resp := &SCSTResp{
+		Code: 0,
+		Msg:  "success",
+	}
+	tar := &core.Target{
+		Name:       req.TargetName,
+		TargetType: req.TargetType,
+	}
+	if err := tar.RemIni2Group(req.Ini, req.GroupName); err != nil {
+		resp.Code = 1
+		resp.Msg = err.Error()
+		return resp, err
+	}
+	return resp, nil
+}

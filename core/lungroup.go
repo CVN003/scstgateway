@@ -80,3 +80,17 @@ func (t *Target) AddIni2Group(ini, ini_group string) error {
 	l.Debugf("[AddIni2Group]:%s/%s/%s existed,skip!", t.Name, ini_group, ini)
 	return nil
 }
+
+func (t *Target) RemIni2Group(ini, ini_group string) error {
+	if _, err := os.Stat(filepath.Join(TargetPath, t.TargetType, t.Name, "ini_groups", ini_group, "initiators", ini)); err != nil {
+		l.Debugf("[RemIni2Group]:%s/%s/%s not existed,skip!", t.Name, ini_group, ini)
+		return nil
+	}
+	cmd := "del " + ini
+	if err := utils.WriteScstSysfs(filepath.Join(TargetPath, t.TargetType, t.Name, "ini_groups", ini_group, "initiators/mgmt"), cmd, 10); err != nil {
+		l.Errorf("[RemIni2Group]:%s/%s/%s add failed:%v", t.Name, ini_group, ini, err)
+		return fmt.Errorf("[RemIni2Group]:%s/%s/%s rem failed:%v", t.Name, ini_group, ini, err)
+	}
+	l.Debugf("[RemIni2Group]:%s/%s/%s rem success!", t.Name, ini_group, ini)
+	return nil
+}

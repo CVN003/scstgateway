@@ -103,3 +103,22 @@ func Test_AddIni2Group(t *testing.T) {
 	}
 	fmt.Printf("addIni2Group: %v\n", resp)
 }
+
+func Test_RemIni2Group(t *testing.T) {
+	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := scst.NewSCSTGatewayClient(conn)
+	resp, err := client.RemIni2Group(context.Background(), &scst.RemIni2GroupReq{
+		Ini:        "client1.oe2203-12-69:tgt1",
+		GroupName:  "group_grpc_001",
+		TargetName: "cdm.iqn.2023-03.com.oe2203-12-69:tgt1",
+		TargetType: "iscsi",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("remIni2Group: %v\n", resp)
+}

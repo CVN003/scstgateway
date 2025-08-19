@@ -40,6 +40,13 @@ message AddIni2GroupReq {
     string Ini = 4; 
 }
 
+message RemIni2GroupReq {
+    string TargetName = 1;
+    string TargetType = 2;
+    string GroupName = 3;
+    string Ini = 4; 
+}
+
 message SCSTResp {
     int32 code =1;
     string msg=2;
@@ -51,4 +58,5 @@ service SCSTGateway{
     rpc AddGroup(AddGroupReq) returns (SCSTResp) {}
     rpc AddLun2Group(AddLun2GroupReq) returns (SCSTResp) {}
     rpc AddIni2Group(AddIni2GroupReq) returns (SCSTResp) {}
+    rpc RemIni2Group(RemIni2GroupReq) returns (SCSTResp) {}
 }

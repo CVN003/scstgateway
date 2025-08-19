@@ -26,6 +26,7 @@ const (
 	SCSTGateway_AddGroup_FullMethodName     = "/scst.SCSTGateway/AddGroup"
 	SCSTGateway_AddLun2Group_FullMethodName = "/scst.SCSTGateway/AddLun2Group"
 	SCSTGateway_AddIni2Group_FullMethodName = "/scst.SCSTGateway/AddIni2Group"
+	SCSTGateway_RemIni2Group_FullMethodName = "/scst.SCSTGateway/RemIni2Group"
 )
 
 // SCSTGatewayClient is the client API for SCSTGateway service.
@@ -37,6 +38,7 @@ type SCSTGatewayClient interface {
 	AddGroup(ctx context.Context, in *AddGroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 	AddLun2Group(ctx context.Context, in *AddLun2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 	AddIni2Group(ctx context.Context, in *AddIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
+	RemIni2Group(ctx context.Context, in *RemIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 }
 
 type sCSTGatewayClient struct {
@@ -97,6 +99,16 @@ func (c *sCSTGatewayClient) AddIni2Group(ctx context.Context, in *AddIni2GroupRe
 	return out, nil
 }
 
+func (c *sCSTGatewayClient) RemIni2Group(ctx context.Context, in *RemIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SCSTResp)
+	err := c.cc.Invoke(ctx, SCSTGateway_RemIni2Group_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SCSTGatewayServer is the server API for SCSTGateway service.
 // All implementations must embed UnimplementedSCSTGatewayServer
 // for forward compatibility.
@@ -106,6 +118,7 @@ type SCSTGatewayServer interface {
 	AddGroup(context.Context, *AddGroupReq) (*SCSTResp, error)
 	AddLun2Group(context.Context, *AddLun2GroupReq) (*SCSTResp, error)
 	AddIni2Group(context.Context, *AddIni2GroupReq) (*SCSTResp, error)
+	RemIni2Group(context.Context, *RemIni2GroupReq) (*SCSTResp, error)
 	mustEmbedUnimplementedSCSTGatewayServer()
 }
 
@@ -130,6 +143,9 @@ func (UnimplementedSCSTGatewayServer) AddLun2Group(context.Context, *AddLun2Grou
 }
 func (UnimplementedSCSTGatewayServer) AddIni2Group(context.Context, *AddIni2GroupReq) (*SCSTResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddIni2Group not implemented")
+}
+func (UnimplementedSCSTGatewayServer) RemIni2Group(context.Context, *RemIni2GroupReq) (*SCSTResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemIni2Group not implemented")
 }
 func (UnimplementedSCSTGatewayServer) mustEmbedUnimplementedSCSTGatewayServer() {}
 func (UnimplementedSCSTGatewayServer) testEmbeddedByValue()                     {}
@@ -242,6 +258,24 @@ func _SCSTGateway_AddIni2Group_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SCSTGateway_RemIni2Group_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemIni2GroupReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SCSTGatewayServer).RemIni2Group(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SCSTGateway_RemIni2Group_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SCSTGatewayServer).RemIni2Group(ctx, req.(*RemIni2GroupReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SCSTGateway_ServiceDesc is the grpc.ServiceDesc for SCSTGateway service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -268,6 +302,10 @@ var SCSTGateway_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddIni2Group",
 			Handler:    _SCSTGateway_AddIni2Group_Handler,
+		},
+		{
+			MethodName: "RemIni2Group",
+			Handler:    _SCSTGateway_RemIni2Group_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
