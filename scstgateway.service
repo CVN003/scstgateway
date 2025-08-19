@@ -1,0 +1,13 @@
+[Unit]
+Description=SCST Gateway Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/scstgateway/bin/scstgateway
+Restart=always
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
