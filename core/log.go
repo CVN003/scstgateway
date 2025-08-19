@@ -42,7 +42,7 @@ func init() {
 	if _, err := os.Stat(SCST_GATEWAY_LOG); err != nil {
 		os.MkdirAll(SCST_GATEWAY_LOG, 0755)
 	}
-	SCST_GATEWAY_LOG = "/var/log/scstgateway.log"
+	SCST_GATEWAY_LOG = "/usr/local/scstgateway/log/scstgateway.log"
 	l = initlog(SCST_GATEWAY_LOG, false, false)
 	l.Infof("$SCST_GATEWAY_LOG:%s", SCST_GATEWAY_LOG)
 }
