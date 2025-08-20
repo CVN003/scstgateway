@@ -1,18 +1,15 @@
+# SCST Gateway
 
-[EN](readme_en.md)
+Implement all operations of SCST kernel layer based on GRPC
 
-#SCST Gateway
-
-基于GRPC实现SCST内核层的所有操作
-
-已经实现的：
-- vdisk_blockio、vdisk_fileio
+Implemented features:
+- vdisk_blockio, vdisk_fileio
 - lun group
 - ini
 - target(iscsi/qla2x00t)
 
 
-服务端示例：
+Server example:
 
 ```go
 import (
@@ -43,7 +40,7 @@ func main() {
 }
 ```
 
-客户端示例:
+Client example:
 
 ```go
 func TestSVD_ADD(t *testing.T) {
@@ -67,22 +64,7 @@ func TestSVD_ADD(t *testing.T) {
 	fmt.Printf("add: %v\n", resp)
 }
 ```
-更多用例可以参考client/client_test.go
+For more use cases, please refer to client/client_test.go
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-商用合作联系:cvn009
-
+Commercial cooperation contact: cvn009
