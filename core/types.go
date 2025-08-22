@@ -4,8 +4,8 @@ const (
 	SCST_KERNEL_PATH = "/sys/kernel/scst_tgt/"
 	HandlerPath      = SCST_KERNEL_PATH + "handlers/"
 	TargetPath       = SCST_KERNEL_PATH + "targets/"
-	// ISCSI_Target     = TargetPath + "iscsi/"
-	// QLA2x00T_Target  = TargetPath + "qla2x00t/"
+	ISCSI_Target     = TargetPath + "iscsi/"
+	QLA2x00T_Target  = TargetPath + "qla2x00t/"
 )
 
 // SCST_Device represents a virtual lun in the SCST
@@ -21,9 +21,9 @@ type SVD struct {
 }
 
 type Lun struct {
-	LunID   int    `json:"lun_id"`   // lun id 0 is always dummy device
-	LunName string `json:"lun_name"` // LUN Name
-	//LunDeviceFullPath string `json:"lun_device_full_path"`
+	LunID             int    `json:"lun_id"`   // lun id 0 is always dummy device
+	LunName           string `json:"lun_name"` // LUN Name
+	LunDeviceFullPath string `json:"lun_device_full_path"`
 }
 
 // Initiator Group

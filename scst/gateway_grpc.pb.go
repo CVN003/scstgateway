@@ -21,12 +21,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SCSTGateway_AddSVD_FullMethodName       = "/scst.SCSTGateway/AddSVD"
-	SCSTGateway_RemoveSVD_FullMethodName    = "/scst.SCSTGateway/RemoveSVD"
-	SCSTGateway_AddGroup_FullMethodName     = "/scst.SCSTGateway/AddGroup"
-	SCSTGateway_AddLun2Group_FullMethodName = "/scst.SCSTGateway/AddLun2Group"
-	SCSTGateway_AddIni2Group_FullMethodName = "/scst.SCSTGateway/AddIni2Group"
-	SCSTGateway_RemIni2Group_FullMethodName = "/scst.SCSTGateway/RemIni2Group"
+	SCSTGateway_AddSVD_FullMethodName        = "/scst.SCSTGateway/AddSVD"
+	SCSTGateway_RemoveSVD_FullMethodName     = "/scst.SCSTGateway/RemoveSVD"
+	SCSTGateway_AddGroup_FullMethodName      = "/scst.SCSTGateway/AddGroup"
+	SCSTGateway_AddLun2Group_FullMethodName  = "/scst.SCSTGateway/AddLun2Group"
+	SCSTGateway_AddIni2Group_FullMethodName  = "/scst.SCSTGateway/AddIni2Group"
+	SCSTGateway_RemIni2Group_FullMethodName  = "/scst.SCSTGateway/RemIni2Group"
+	SCSTGateway_GetLiveConfig_FullMethodName = "/scst.SCSTGateway/GetLiveConfig"
 )
 
 // SCSTGatewayClient is the client API for SCSTGateway service.
@@ -39,6 +40,7 @@ type SCSTGatewayClient interface {
 	AddLun2Group(ctx context.Context, in *AddLun2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 	AddIni2Group(ctx context.Context, in *AddIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 	RemIni2Group(ctx context.Context, in *RemIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
+	GetLiveConfig(ctx context.Context, in *GetLiveConfigReq, opts ...grpc.CallOption) (*SCSTResp, error)
 }
 
 type sCSTGatewayClient struct {
@@ -109,6 +111,16 @@ func (c *sCSTGatewayClient) RemIni2Group(ctx context.Context, in *RemIni2GroupRe
 	return out, nil
 }
 
+func (c *sCSTGatewayClient) GetLiveConfig(ctx context.Context, in *GetLiveConfigReq, opts ...grpc.CallOption) (*SCSTResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SCSTResp)
+	err := c.cc.Invoke(ctx, SCSTGateway_GetLiveConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SCSTGatewayServer is the server API for SCSTGateway service.
 // All implementations must embed UnimplementedSCSTGatewayServer
 // for forward compatibility.
@@ -119,6 +131,7 @@ type SCSTGatewayServer interface {
 	AddLun2Group(context.Context, *AddLun2GroupReq) (*SCSTResp, error)
 	AddIni2Group(context.Context, *AddIni2GroupReq) (*SCSTResp, error)
 	RemIni2Group(context.Context, *RemIni2GroupReq) (*SCSTResp, error)
+	GetLiveConfig(context.Context, *GetLiveConfigReq) (*SCSTResp, error)
 	mustEmbedUnimplementedSCSTGatewayServer()
 }
 
@@ -146,6 +159,9 @@ func (UnimplementedSCSTGatewayServer) AddIni2Group(context.Context, *AddIni2Grou
 }
 func (UnimplementedSCSTGatewayServer) RemIni2Group(context.Context, *RemIni2GroupReq) (*SCSTResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemIni2Group not implemented")
+}
+func (UnimplementedSCSTGatewayServer) GetLiveConfig(context.Context, *GetLiveConfigReq) (*SCSTResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLiveConfig not implemented")
 }
 func (UnimplementedSCSTGatewayServer) mustEmbedUnimplementedSCSTGatewayServer() {}
 func (UnimplementedSCSTGatewayServer) testEmbeddedByValue()                     {}
@@ -276,6 +292,24 @@ func _SCSTGateway_RemIni2Group_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SCSTGateway_GetLiveConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLiveConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SCSTGatewayServer).GetLiveConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SCSTGateway_GetLiveConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SCSTGatewayServer).GetLiveConfig(ctx, req.(*GetLiveConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SCSTGateway_ServiceDesc is the grpc.ServiceDesc for SCSTGateway service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -306,6 +340,10 @@ var SCSTGateway_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemIni2Group",
 			Handler:    _SCSTGateway_RemIni2Group_Handler,
+		},
+		{
+			MethodName: "GetLiveConfig",
+			Handler:    _SCSTGateway_GetLiveConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

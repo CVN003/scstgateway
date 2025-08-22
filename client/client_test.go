@@ -2,13 +2,31 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 
+	"github.com/CVN003/scstgateway/core"
 	"github.com/CVN003/scstgateway/scst"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
+
+func Test_GetLiveConfig(t *testing.T) {
+	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := scst.NewSCSTGatewayClient(conn)
+	resp, err := client.GetLiveConfig(context.Background(), &scst.GetLiveConfigReq{})
+	if err != nil {
+		panic(err)
+	}
+	config := core.SCSTMapping{}
+	json.Unmarshal([]byte(resp.Data), &config)
+	fmt.Printf("getLiveConfig: %v\n", config)
+}
 
 func TestSVD_ADD(t *testing.T) {
 	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
