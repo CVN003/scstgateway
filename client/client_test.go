@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/CVN003/scstgateway/core"
@@ -26,6 +27,7 @@ func Test_GetLiveConfig(t *testing.T) {
 	config := core.SCSTMapping{}
 	json.Unmarshal([]byte(resp.Data), &config)
 	fmt.Printf("getLiveConfig: %v\n", config)
+	os.WriteFile("/root/grpc-scst.json", []byte(resp.Data), 0644)
 }
 
 func TestSVD_ADD(t *testing.T) {
@@ -139,4 +141,20 @@ func Test_RemIni2Group(t *testing.T) {
 		panic(err)
 	}
 	fmt.Printf("remIni2Group: %v\n", resp)
+}
+
+func Test_SaveConfig(t *testing.T) {
+	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := scst.NewSCSTGatewayClient(conn)
+	resp, err := client.SaveConfig(context.Background(), &scst.SaveConfigReq{
+		Version: "r000001",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("saveConfig: %v\n", resp)
 }

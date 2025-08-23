@@ -1,6 +1,7 @@
 package core
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -77,4 +78,23 @@ func getTargetMap(path string) ([]Target, error) {
 	}
 
 	return tgtGrp, nil
+}
+
+func SaveConfig(version string) error {
+	config, err := GetLiveConfig()
+	if err != nil {
+		l.Debugf("[SaveConfig]:get live config failed: %v", err)
+		return err
+	}
+	if configbin, err := json.MarshalIndent(config, "", " "); err != nil {
+		l.Debugf("[SaveConfig]:json marsha failed: %v", err)
+		return err
+	} else {
+		if err := os.WriteFile(filepath.Join(DEFAULT_SAVE_PATH, version+".json"), []byte(configbin), 0644); err != nil {
+			l.Debugf("[SaveConfig]:write config failed: %v", err)
+			return err
+		}
+		l.Infof("[SaveConfig]:write config %s success!", filepath.Join(DEFAULT_SAVE_PATH, version+".json"))
+		return nil
+	}
 }

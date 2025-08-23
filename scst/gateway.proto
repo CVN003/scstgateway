@@ -49,6 +49,10 @@ message RemIni2GroupReq {
 
 message GetLiveConfigReq {}
 
+message SaveConfigReq {
+    string Version=1;
+}
+
 message SCSTResp {
     int32 code =1;
     string msg=2;
@@ -63,4 +67,5 @@ service SCSTGateway{
     rpc AddIni2Group(AddIni2GroupReq) returns (SCSTResp) {}
     rpc RemIni2Group(RemIni2GroupReq) returns (SCSTResp) {}
     rpc GetLiveConfig(GetLiveConfigReq) returns (SCSTResp) {}
+    rpc SaveConfig(SaveConfigReq) returns (SCSTResp) {}
 }

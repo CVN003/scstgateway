@@ -28,6 +28,7 @@ const (
 	SCSTGateway_AddIni2Group_FullMethodName  = "/scst.SCSTGateway/AddIni2Group"
 	SCSTGateway_RemIni2Group_FullMethodName  = "/scst.SCSTGateway/RemIni2Group"
 	SCSTGateway_GetLiveConfig_FullMethodName = "/scst.SCSTGateway/GetLiveConfig"
+	SCSTGateway_SaveConfig_FullMethodName    = "/scst.SCSTGateway/SaveConfig"
 )
 
 // SCSTGatewayClient is the client API for SCSTGateway service.
@@ -41,6 +42,7 @@ type SCSTGatewayClient interface {
 	AddIni2Group(ctx context.Context, in *AddIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 	RemIni2Group(ctx context.Context, in *RemIni2GroupReq, opts ...grpc.CallOption) (*SCSTResp, error)
 	GetLiveConfig(ctx context.Context, in *GetLiveConfigReq, opts ...grpc.CallOption) (*SCSTResp, error)
+	SaveConfig(ctx context.Context, in *SaveConfigReq, opts ...grpc.CallOption) (*SCSTResp, error)
 }
 
 type sCSTGatewayClient struct {
@@ -121,6 +123,16 @@ func (c *sCSTGatewayClient) GetLiveConfig(ctx context.Context, in *GetLiveConfig
 	return out, nil
 }
 
+func (c *sCSTGatewayClient) SaveConfig(ctx context.Context, in *SaveConfigReq, opts ...grpc.CallOption) (*SCSTResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SCSTResp)
+	err := c.cc.Invoke(ctx, SCSTGateway_SaveConfig_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SCSTGatewayServer is the server API for SCSTGateway service.
 // All implementations must embed UnimplementedSCSTGatewayServer
 // for forward compatibility.
@@ -132,6 +144,7 @@ type SCSTGatewayServer interface {
 	AddIni2Group(context.Context, *AddIni2GroupReq) (*SCSTResp, error)
 	RemIni2Group(context.Context, *RemIni2GroupReq) (*SCSTResp, error)
 	GetLiveConfig(context.Context, *GetLiveConfigReq) (*SCSTResp, error)
+	SaveConfig(context.Context, *SaveConfigReq) (*SCSTResp, error)
 	mustEmbedUnimplementedSCSTGatewayServer()
 }
 
@@ -162,6 +175,9 @@ func (UnimplementedSCSTGatewayServer) RemIni2Group(context.Context, *RemIni2Grou
 }
 func (UnimplementedSCSTGatewayServer) GetLiveConfig(context.Context, *GetLiveConfigReq) (*SCSTResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLiveConfig not implemented")
+}
+func (UnimplementedSCSTGatewayServer) SaveConfig(context.Context, *SaveConfigReq) (*SCSTResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SaveConfig not implemented")
 }
 func (UnimplementedSCSTGatewayServer) mustEmbedUnimplementedSCSTGatewayServer() {}
 func (UnimplementedSCSTGatewayServer) testEmbeddedByValue()                     {}
@@ -310,6 +326,24 @@ func _SCSTGateway_GetLiveConfig_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SCSTGateway_SaveConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SaveConfigReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SCSTGatewayServer).SaveConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SCSTGateway_SaveConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SCSTGatewayServer).SaveConfig(ctx, req.(*SaveConfigReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SCSTGateway_ServiceDesc is the grpc.ServiceDesc for SCSTGateway service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -344,6 +378,10 @@ var SCSTGateway_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetLiveConfig",
 			Handler:    _SCSTGateway_GetLiveConfig_Handler,
+		},
+		{
+			MethodName: "SaveConfig",
+			Handler:    _SCSTGateway_SaveConfig_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

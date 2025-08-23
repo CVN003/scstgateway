@@ -1,11 +1,12 @@
 package core
 
 const (
-	SCST_KERNEL_PATH = "/sys/kernel/scst_tgt/"
-	HandlerPath      = SCST_KERNEL_PATH + "handlers/"
-	TargetPath       = SCST_KERNEL_PATH + "targets/"
-	ISCSI_Target     = TargetPath + "iscsi/"
-	QLA2x00T_Target  = TargetPath + "qla2x00t/"
+	SCST_KERNEL_PATH  = "/sys/kernel/scst_tgt/"
+	HandlerPath       = SCST_KERNEL_PATH + "handlers/"
+	TargetPath        = SCST_KERNEL_PATH + "targets/"
+	ISCSI_Target      = TargetPath + "iscsi/"
+	QLA2x00T_Target   = TargetPath + "qla2x00t/"
+	DEFAULT_SAVE_PATH = "/usr/local/scstgateway/etc/"
 )
 
 // SCST_Device represents a virtual lun in the SCST

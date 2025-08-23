@@ -125,11 +125,23 @@ func (g *Gateway) GetLiveConfig(ctx context.Context, req *GetLiveConfigReq) (*SC
 		resp.Msg = err.Error()
 		return resp, err
 	}
-	if jsonStr, err := json.Marshal(config); err != nil {
+	if jsonStr, err := json.MarshalIndent(config, "", "  "); err != nil {
 		return resp, err
 	} else {
 		resp.Data = string(jsonStr)
 		return resp, nil
 	}
+}
 
+func (g *Gateway) SaveConfig(ctx context.Context, req *SaveConfigReq) (*SCSTResp, error) {
+	resp := &SCSTResp{
+		Code: 0,
+		Msg:  "success",
+	}
+	if err := core.SaveConfig(req.Version); err != nil {
+		resp.Code = 1
+		resp.Msg = err.Error()
+		return resp, err
+	}
+	return resp, nil
 }
