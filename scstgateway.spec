@@ -1,5 +1,5 @@
 Name:           scstgateway
-Version:        0.1
+Version:        1.0.3
 Release:        1%{?dist}
 Summary:        SCST Gateway service
 License:        MIT
@@ -45,6 +45,8 @@ fi
 systemctl daemon-reload
 
 %changelog
-* Aug 18 2025 cvn003<unixkeeper@163.com> - 0.1
+* Aug 18 2025 cvn003<unixkeeper@163.com> - 1.0.1
 - Initial package
 - Change base directory to /usr/local/scstgateway
+- Add GetLiveConfig - 1.0.2
+- Aug 23 2025 Add build.sh - 1.0.3
