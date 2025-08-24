@@ -49,6 +49,20 @@ func TestSVD_ADD(t *testing.T) {
 		panic(err)
 	}
 	fmt.Printf("add: %v\n", resp)
+
+	resp, err = client.AddSVD(context.Background(), &scst.AddSVDReq{
+		LunName:           "lun_grpc_002",
+		LunDeviceFullPath: "/dev/prod/v-zei54vfr",
+		VID:               "AAA",
+		PID:               "BBB",
+		USN:               "AABBCCD2",
+		HandlerType:       "vdisk_blockio",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("add: %v\n", resp)
+
 }
 
 func Test_AddGroup(t *testing.T) {
@@ -78,6 +92,17 @@ func Test_Add2LunGroup(t *testing.T) {
 	client := scst.NewSCSTGatewayClient(conn)
 	resp, err := client.AddLun2Group(context.Background(), &scst.AddLun2GroupReq{
 		LunName:    "lun_grpc_001",
+		GroupName:  "group_grpc_001",
+		TargetName: "cdm.iqn.2023-03.com.oe2203-12-69:tgt1",
+		TargetType: "iscsi",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("addLun2Group: %v\n", resp)
+
+	resp, err = client.AddLun2Group(context.Background(), &scst.AddLun2GroupReq{
+		LunName:    "lun_grpc_002",
 		GroupName:  "group_grpc_001",
 		TargetName: "cdm.iqn.2023-03.com.oe2203-12-69:tgt1",
 		TargetType: "iscsi",
