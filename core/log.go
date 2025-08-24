@@ -39,10 +39,10 @@ func initlog(logPath string, isColor bool, disableStdOut bool) *zap.SugaredLogge
 
 func init() {
 	SCST_GATEWAY_LOG := os.Getenv("SCST_GATEWAY_LOG")
-	if _, err := os.Stat(SCST_GATEWAY_LOG); err != nil {
-		os.MkdirAll(SCST_GATEWAY_LOG, 0755)
+	if SCST_GATEWAY_LOG == "" {
+		SCST_GATEWAY_LOG = "/usr/local/scstgateway/log/scstgateway.log"
 	}
-	SCST_GATEWAY_LOG = "/usr/local/scstgateway/log/scstgateway.log"
+	os.MkdirAll(SCST_GATEWAY_LOG, 0755)
 	l = initlog(SCST_GATEWAY_LOG, false, false)
 	l.Infof("$SCST_GATEWAY_LOG:%s", SCST_GATEWAY_LOG)
 }
