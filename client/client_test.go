@@ -51,23 +51,6 @@ func TestSVD_ADD(t *testing.T) {
 	fmt.Printf("add: %v\n", resp)
 }
 
-func TestSVD_REMOVE(t *testing.T) {
-	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		panic(err)
-	}
-	defer conn.Close()
-	client := scst.NewSCSTGatewayClient(conn)
-	resp, err := client.RemoveSVD(context.Background(), &scst.RemoveSVDReq{
-		LunName:     "lun_grpc_001",
-		HandlerType: "vdisk_blockio",
-	})
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("remove: %v\n", resp)
-}
-
 func Test_AddGroup(t *testing.T) {
 	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -141,6 +124,23 @@ func Test_RemIni2Group(t *testing.T) {
 		panic(err)
 	}
 	fmt.Printf("remIni2Group: %v\n", resp)
+}
+
+func TestSVD_REMOVE(t *testing.T) {
+	conn, err := grpc.NewClient("localhost:55101", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := scst.NewSCSTGatewayClient(conn)
+	resp, err := client.RemoveSVD(context.Background(), &scst.RemoveSVDReq{
+		LunName:     "lun_grpc_001",
+		HandlerType: "vdisk_blockio",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("remove: %v\n", resp)
 }
 
 func Test_SaveConfig(t *testing.T) {

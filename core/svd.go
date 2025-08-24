@@ -90,7 +90,7 @@ func (svd *SVD) Remove() error {
 	if err := svd.setMGMT(); err != nil {
 		return err
 	}
-	if _, err := os.Stat(filepath.Join(svd.mgmt, svd.LunName)); err != nil {
+	if _, err := os.Stat(filepath.Join(HandlerPath, svd.Handler, svd.LunName)); err != nil {
 		l.Debugf("[RemoveDeivce]:%s not exist!", svd.LunName)
 		return nil
 	}
